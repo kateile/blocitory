@@ -2,6 +2,7 @@ name: blocitory
 description: A new Flutter project.
 version: 0.0.1
 homepage:
+publish_to: none
 
 environment:
   sdk: ">=2.16.1 <3.0.0"
@@ -10,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  graphql_flutter: ^5.1.0
+  graphql_flutter: ^5.0.1-beta.6
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
 
