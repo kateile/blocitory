@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../widgets/widgets.dart';
 import 'resource_state.dart';
 
-typedef ResourceMutationBuilder<B, D> = Widget Function(
-    BuildContext context, B cubit, D data);
+typedef ResourceMutationBuilder<B> = Widget Function(
+    BuildContext context, B cubit);
 
 typedef ResourceMutationOnSuccess<D> = void Function(
     BuildContext context, D data);
@@ -16,7 +16,7 @@ typedef ResourceMutationOnError = void Function(
 class MutationBuilder<T, B extends Cubit<ResourceState<T>>>
     extends StatelessWidget {
   /// This will build a widget that will be shown before mutation like form etc.
-  final ResourceMutationBuilder<B, T> builder;
+  final ResourceMutationBuilder<B> builder;
 
   /// If error occurred during mutation
   final ResourceMutationOnError? onError;
@@ -110,7 +110,7 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>>
         }
 
         //We always show form when not loading.
-        return builder(context, cubit, state.data);
+        return builder(context, cubit);
       },
     );
   }
