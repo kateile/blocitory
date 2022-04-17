@@ -55,11 +55,7 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
   @override
   Widget build(BuildContext context) {
     return BlocProvider<B>(
-      create: (context) {
-        final R repository = RepositoryProvider.of<R>(context);
-        final B bloc = blocCreator(repository);
-        return bloc;
-      },
+      create: (context) => blocCreator(RepositoryProvider.of<R>(context)),
       child: BlocConsumer<B, ResourceState>(
         listener: (context, state) {
           //Here onSuccess can have side effects like navigation
