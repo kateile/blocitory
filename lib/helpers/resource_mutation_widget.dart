@@ -19,6 +19,7 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
     extends StatelessWidget {
   /// This will build a widget that will be shown before mutation like form etc.
   final ResourceMutationBuilder<B> builder;
+
   /// This will provide bloc
   final ItemCreator<B, R> blocCreator;
 
@@ -55,9 +56,9 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
   Widget build(BuildContext context) {
     return BlocProvider<B>(
       create: (context) {
-        return blocCreator(
-          RepositoryProvider.of<R>(context),
-        );
+        final R repository = RepositoryProvider.of<R>(context);
+        final B bloc = blocCreator(repository);
+        return bloc;
       },
       child: BlocConsumer<B, ResourceState>(
         listener: (context, state) {
