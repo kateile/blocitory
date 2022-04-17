@@ -19,6 +19,7 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
     extends StatelessWidget {
   /// This will build a widget that will be shown before mutation like form etc.
   final ResourceMutationBuilder<B> builder;
+  /// This will provide bloc
   final ItemCreator<B, R> blocCreator;
 
   /// If error occurred during mutation
