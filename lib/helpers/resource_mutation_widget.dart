@@ -7,13 +7,19 @@ import 'resource_state.dart';
 typedef ItemCreator<B, R> = B Function(R repository);
 
 typedef ResourceMutationBuilder<B> = Widget Function(
-    BuildContext context, B cubit);
+  BuildContext context,
+  B cubit,
+);
 
 typedef ResourceMutationOnSuccess<D> = void Function(
-    BuildContext context, D data);
+  BuildContext context,
+  D data,
+);
 
 typedef ResourceMutationOnError = void Function(
-    BuildContext context, String message);
+  BuildContext context,
+  String message,
+);
 
 class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
     extends StatelessWidget {

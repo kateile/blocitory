@@ -1,7 +1,7 @@
 name: blocitory
 description: A new Flutter project.
 version: 0.0.1
-homepage:
+homepage: https://github.com/kateile/blocitory
 publish_to: none
 
 environment:
@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   graphql_flutter: ^5.0.1-beta.6
-  flutter_bloc: ^8.0.1
+  flutter_bloc: ^7.3.3
   equatable: ^2.0.3
 
 dev_dependencies:
