@@ -73,9 +73,9 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
                 context: context,
                 message: successMessage ?? 'Success',
               );
-
-              if (pop) Navigator.of(context).pop();
             }
+
+            if (pop) Navigator.of(context).pop();
           }
 
           if (state.status == ResourceStatus.error && state.message != null) {
