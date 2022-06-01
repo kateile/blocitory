@@ -41,10 +41,7 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
   /// Custom loading widget
   final Widget? loadingWidget;
 
-  /// If this is true [successMessage] will be rendered as body instead of
-  /// snack bar
-  final bool showSuccessBody; //todo alertType body|dialog|snackBar|sheet
-  final bool pop; //todo alertType body|dialog|snackBar|sheet
+  final bool pop;
 
   const MutationBuilder({
     Key? key,
@@ -54,7 +51,6 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
     this.onSuccess,
     this.successMessage,
     this.loadingWidget,
-    this.showSuccessBody = false,
     this.pop = false,
   }) : super(key: key);
 
@@ -65,7 +61,7 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
       child: BlocConsumer<B, ResourceState>(
         listener: (context, state) {
           //Here onSuccess can have side effects like navigation
-          if (state.status == ResourceStatus.success && !showSuccessBody) {
+          if (state.status == ResourceStatus.success) {
             if (onSuccess != null && state.data != null) {
               onSuccess!(context, state.data);
             } else {
@@ -97,30 +93,6 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
 
           if (state.status == ResourceStatus.loading) {
             return loadingWidget ?? const LoadingIndicator();
-          }
-
-          //todo should we also use alert here
-          if (showSuccessBody && state.status == ResourceStatus.success) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  successMessage ?? 'Action Completed',
-                  maxLines: 2,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                const Divider(),
-                Button(
-                  callback: () {
-                    Navigator.of(context).pop();
-                  },
-                  title: 'Go Back',
-                )
-              ],
-            );
           }
 
           //We always show form when not loading.
