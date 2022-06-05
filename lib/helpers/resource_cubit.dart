@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -12,7 +13,7 @@ typedef QueryExecutor = Future<QueryResult> Function();
 typedef ResultParser<T> = T Function(Map<String, dynamic> result);
 
 /// Function which will be invoked after successful mutation/query
-typedef OnSuccessCallback<T> = Future<void> Function(T result);
+typedef OnSuccessCallback<T> = FutureOr<void> Function(T result);
 typedef OnExceptionCallback = void Function(OperationException);
 
 /// This abstracts calling repository and handling result.
