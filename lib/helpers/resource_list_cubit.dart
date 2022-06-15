@@ -11,6 +11,7 @@ class ResourceListCubit<T> extends ResourceCubit<ResourceListData<T>> {
     super.update(state.data?.copyWith(
       items: list,
       addedItems: [item],
+      updatedItems: [],
     ));
   }
 
@@ -26,6 +27,7 @@ class ResourceListCubit<T> extends ResourceCubit<ResourceListData<T>> {
 
     super.update(state.data?.copyWith(
       items: list,
+      addedItems: [], //So indicator will be in one place
       updatedItems: [newItem],
     ));
   }
