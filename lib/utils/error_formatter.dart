@@ -27,12 +27,8 @@ String? formatGraphqlError(dynamic exception) {
 
     return str;
   } catch (e) {
-    if (e.toString().isNotEmpty) {
-      return "Error: ${e.toString()}";
-    }
-
     log('Error to be formatter exception: ${e.toString()}');
     //If we can't extract messages above then it could be internet error.
-    return 'Please make sure you are connected to the internet and try again';
+    return 'Please make sure your internet connection is working properly.';
   }
 }
