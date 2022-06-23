@@ -31,4 +31,15 @@ class ResourceListCubit<T> extends ResourceCubit<ResourceListData<T>> {
       updatedItems: [newItem],
     ));
   }
+
+  T? findItem(bool Function(T e) test) {
+    final list = state.data?.items;
+
+    try {
+      final old = list?.firstWhere(test);
+      return old;
+    } catch (_) {
+      return null;
+    }
+  }
 }
