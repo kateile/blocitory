@@ -41,6 +41,8 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
   /// Custom loading widget
   final Widget? loadingWidget;
 
+  final bool showPopUpSuccess;
+
   final bool pop;
 
   const MutationBuilder({
@@ -52,6 +54,7 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
     this.successMessage,
     this.loadingWidget,
     this.pop = false,
+    this.showPopUpSuccess = true,
   }) : super(key: key);
 
   @override
@@ -64,10 +67,12 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
           if (state.status == ResourceStatus.success) {
             if (onSuccess != null && state.data != null) {
               onSuccess!(context, state.data);
-            } else {
+            }
+
+            if (showPopUpSuccess) {
               displaySuccess(
                 context: context,
-                message: successMessage ?? 'Success',
+                message: successMessage ?? 'Action completed successfully!',
               );
             }
 
