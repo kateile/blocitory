@@ -83,8 +83,6 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
                 context: context,
                 message: state.message!,
               );
-
-              if (pop) Navigator.of(context).pop();
             }
           }
         },
