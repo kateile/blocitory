@@ -13,7 +13,7 @@ class Button extends StatelessWidget {
     required this.callback,
     required this.title,
     this.color,
-    this.padding,
+    this.padding = EdgeInsets.zero,
   }) : super(key: key);
 
   @override
