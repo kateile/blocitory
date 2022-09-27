@@ -15,6 +15,17 @@ class ResourceListCubit<T> extends ResourceCubit<ResourceListData<T>> {
     ));
   }
 
+  addItems(List<T> items) {
+    final list = state.data?.items;
+    list?.insertAll(0, items);
+
+    super.update(state.data?.copyWith(
+      items: list,
+      addedItems: items,
+      updatedItems: [],
+    ));
+  }
+
   updateItem(T Function(List<T> e) test, T newItem) {
     final list = state.data?.items;
 
