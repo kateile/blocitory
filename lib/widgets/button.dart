@@ -18,9 +18,9 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).primaryColor == Colors.white
-        ? Theme.of(context).primaryColor
-        : Theme.of(context).primaryColor;
+    // final primary = Theme.of(context).primaryColor == Colors.white
+    //     ? Theme.of(context).primaryColor
+    //     : Theme.of(context).primaryColor;
 
     return Padding(
       padding: padding ?? const EdgeInsets.all(8.0),
@@ -28,10 +28,10 @@ class Button extends StatelessWidget {
         children: [
           Expanded(
             child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(color ?? primary),
-              ),
+              // style: ButtonStyle(
+              //   backgroundColor:
+              //       MaterialStateProperty.all<Color>(color ?? primary),
+              // ),
               //textColor: Colors.white,
               onPressed: callback,
               child: Text(
