@@ -17,6 +17,7 @@ class AutoPagedList<T> extends StatefulWidget {
   final PagedListResultParser<T> parser;
   final bool grid;
   final int crossAxisCount;
+  final PagingController<int, T>? controller;
 
   const AutoPagedList({
     Key? key,
@@ -25,6 +26,7 @@ class AutoPagedList<T> extends StatefulWidget {
     required this.parser,
     this.grid = false,
     this.crossAxisCount = 2,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -34,11 +36,15 @@ class AutoPagedList<T> extends StatefulWidget {
 class _AutoPagedListState<T> extends State<AutoPagedList<T>> {
   static const _pageSize = 10;
 
-  final PagingController<int, T> _pagingController =
-      PagingController(firstPageKey: 0);
+  late PagingController<int, T> _pagingController;
 
   @override
   void initState() {
+    if (widget.controller != null) {
+      _pagingController = widget.controller!;
+    } else {
+      _pagingController = PagingController(firstPageKey: 0);
+    }
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -50,7 +56,6 @@ class _AutoPagedListState<T> extends State<AutoPagedList<T>> {
       final result = await widget.executor(context, pageKey);
 
       if (result.hasException) {
-        print('Paging exception: ${result.exception}');
         _pagingController.error = result.exception;
       } else {
         final List<T> newData = widget.parser(result);
@@ -60,12 +65,10 @@ class _AutoPagedListState<T> extends State<AutoPagedList<T>> {
           _pagingController.appendLastPage(newData);
         } else {
           final nextPageKey = pageKey + newData.length;
-          print('nextPageKey: $nextPageKey');
           _pagingController.appendPage(newData, nextPageKey);
         }
       }
     } catch (error) {
-      print('Paging exception: $error');
       _pagingController.error = error;
     }
   }
