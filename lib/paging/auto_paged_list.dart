@@ -75,7 +75,6 @@ class _AutoPagedListState<T> extends State<AutoPagedList<T>> {
 
   @override
   Widget build(BuildContext context) {
-    //todo is it working?
     return RefreshIndicator(
       onRefresh: () => Future.sync(
         () => _pagingController.refresh(),
