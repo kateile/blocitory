@@ -1,3 +1,5 @@
-## 0.0.1
+## 0.1.0
 
-* TODO: Describe initial release.
+- refresh the package for modern Flutter and Dart SDKs
+- clean repository files for GitHub publishing
+- add CI and basic package smoke coverage
