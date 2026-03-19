@@ -19,7 +19,7 @@
 dependencies:
   blocitory:
     git:
-      url: https://github.com/your-org/blocitory.git
+      url: https://github.com/kateile/blocitory.git
       ref: main
 ```
 
@@ -28,5 +28,3 @@ dependencies:
 ```dart
 import 'package:blocitory/blocitory.dart';
 ```
-
-This fork is intended to keep existing projects working on modern Flutter versions. Before publishing it under your own GitHub account or organization, update the dependency example above and any package metadata URLs to match the final repository.
