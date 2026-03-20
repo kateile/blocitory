@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql/client.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 typedef PagedListExecutor = Future<QueryResult> Function(
