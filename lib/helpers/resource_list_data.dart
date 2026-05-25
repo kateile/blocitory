@@ -4,13 +4,10 @@ import 'package:equatable/equatable.dart';
 ///
 /// This is used in non paged lists like contactsList and walletsList
 class ResourceListData<T> extends Equatable {
-  ResourceListData({
-    List<T>? items,
-    List<T>? addedItems,
-    List<T>? updatedItems,
-  })  : items = items ?? <T>[],
-        newItems = addedItems ?? <T>[],
-        updatedItems = updatedItems ?? <T>[];
+  ResourceListData({List<T>? items, List<T>? addedItems, List<T>? updatedItems})
+    : items = items ?? <T>[],
+      newItems = addedItems ?? <T>[],
+      updatedItems = updatedItems ?? <T>[];
 
   /// This represents initial fetched data
   final List<T> items;

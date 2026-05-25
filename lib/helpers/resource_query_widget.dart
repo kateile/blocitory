@@ -5,8 +5,8 @@ import '../../widgets/widgets.dart';
 import 'resource_state.dart';
 
 /// Cubit has its own uses here etc
-typedef ResourceQueryBuilder<D, B> = Widget Function(
-    BuildContext context, D data, B cubit);
+typedef ResourceQueryBuilder<D, B> =
+    Widget Function(BuildContext context, D data, B cubit);
 
 typedef ResourceQueryRetryBuilder<B> = void Function(B cubit);
 
@@ -62,10 +62,7 @@ class QueryBuilder<T, B extends Cubit<ResourceState<T>>>
         if (state.status == ResourceStatus.error) {
           if (retryWidget != null) {
             //When that widget is clicked amazing things happen
-            return InkWell(
-              child: retryWidget,
-              onTap: () => retry(cubit),
-            );
+            return InkWell(child: retryWidget, onTap: () => retry(cubit));
           }
           return RetryWidget(
             message: state.message,

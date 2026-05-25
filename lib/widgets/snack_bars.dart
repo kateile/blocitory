@@ -31,15 +31,15 @@ displayError({
     duration: const Duration(seconds: 30),
     action: retryCallback != null
         ? SnackBarAction(
-      label: 'Retry',
-      textColor: Colors.white,
-      onPressed: retryCallback,
-    )
+            label: 'Retry',
+            textColor: Colors.white,
+            onPressed: retryCallback,
+          )
         : SnackBarAction(
-      label: 'Close',
-      textColor: Colors.white,
-      onPressed: () {},
-    ),
+            label: 'Close',
+            textColor: Colors.white,
+            onPressed: () {},
+          ),
   );
 
   // Find the Scaffold in the widget tree and use it to show a SnackBar.

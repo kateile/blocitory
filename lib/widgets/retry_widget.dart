@@ -7,11 +7,8 @@ class RetryWidget extends StatelessWidget {
   final VoidCallback callback;
   final String? message;
 
-  const RetryWidget({
-    Key? key,
-    required this.callback,
-    this.message,
-  }) : super(key: key);
+  const RetryWidget({Key? key, required this.callback, this.message})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +24,8 @@ class RetryWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Divider(
-            height: 16.0,
-          ),
-          Button(
-            padding: EdgeInsets.zero,
-            callback: callback,
-            title: 'Retry',
-          )
+          const Divider(height: 16.0),
+          Button(padding: EdgeInsets.zero, callback: callback, title: 'Retry'),
         ],
       ),
     );

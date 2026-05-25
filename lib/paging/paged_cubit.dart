@@ -1,49 +1,34 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:graphql/client.dart';
 
 import '../utils/error_formatter.dart';
 import 'paged_state.dart';
 
-typedef PagedQueryExecutor = Future<QueryResult> Function(int skip);
+typedef PagedQueryExecutor<R> = Future<List<R>> Function(int skip);
 
-typedef PagedRefreshExecutor = Future<QueryResult> Function();
-
-/// Parser must return expected result.
-typedef PagedResultParser<R> = List<R> Function(Map<String, dynamic> result);
+typedef PagedRefreshExecutor<R> = Future<List<R>> Function();
 
 abstract class PagedCubit<R> extends Cubit<PagedState<R>> {
   final int _limit = 10;
 
   PagedCubit() : super(PagedState());
 
-  void paginate({
-    required PagedQueryExecutor executor,
-    required PagedResultParser<R> parser,
-  }) async {
+  void paginate({required PagedQueryExecutor<R> executor}) async {
     /// showing loading with other contents intact.
     emit(state.copyWith(status: PagedStatus.loading));
 
     if (state.status == PagedStatus.end) emit(state);
 
     /// This is inner function
-    Future<List<R>> _fetch(int skip) async {
-      final result = await executor(skip);
-      if (result.hasException) {
-        throw result.exception!;
-      } else {
-        return parser(result.data!);
-      }
-    }
+    Future<List<R>> _fetch(int skip) => executor(skip);
 
     try {
       if (state.status == PagedStatus.initial) {
         final items = await _fetch(0);
-        emit(state.copyWith(
-          status: _hasReachedEnd(items.length),
-          items: items,
-        ));
+        emit(
+          state.copyWith(status: _hasReachedEnd(items.length), items: items),
+        );
       }
 
       final items = await _fetch(state.items.length);
@@ -51,37 +36,31 @@ abstract class PagedCubit<R> extends Cubit<PagedState<R>> {
       if (items.isEmpty) {
         emit(state.copyWith(status: PagedStatus.end));
       } else {
-        emit(state.copyWith(
-          status: _hasReachedEnd(items.length),
-          items: List.of(state.items)..addAll(items),
-        ));
+        emit(
+          state.copyWith(
+            status: _hasReachedEnd(items.length),
+            items: List.of(state.items)..addAll(items),
+          ),
+        );
       }
     } catch (e) {
-      emit(state.copyWith(
-        status: PagedStatus.failure,
-        message: formatGraphqlError(e),
-      ));
+      emit(
+        state.copyWith(
+          status: PagedStatus.failure,
+          message: formatGraphqlError(e),
+        ),
+      );
     }
   }
 
-  void handleRefresh({
-    required PagedRefreshExecutor executor,
-    required PagedResultParser<R> parser,
-  }) async {
+  void handleRefresh({required PagedRefreshExecutor<R> executor}) async {
     final previousItems = state.items;
 
     /// showing is refreshing
     emit(state.copyWith(refreshStatus: RefreshStatus.refreshing));
 
     /// This is inner function
-    Future<List<R>> _fetch() async {
-      final result = await executor();
-      if (result.hasException) {
-        throw result.exception!;
-      } else {
-        return parser(result.data!);
-      }
-    }
+    Future<List<R>> _fetch() => executor();
 
     try {
       /// fetch from zero
@@ -89,26 +68,32 @@ abstract class PagedCubit<R> extends Cubit<PagedState<R>> {
 
       /// Here we are not appending items we just set new ones.
       if (items.isEmpty) {
-        emit(state.copyWith(
-          status: PagedStatus.end,
-          items: [],
-          refreshStatus: RefreshStatus.success,
-        ));
+        emit(
+          state.copyWith(
+            status: PagedStatus.end,
+            items: [],
+            refreshStatus: RefreshStatus.success,
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          status: _hasReachedEnd(items.length),
-          items: items,
-          refreshStatus: RefreshStatus.success,
-        ));
+        emit(
+          state.copyWith(
+            status: _hasReachedEnd(items.length),
+            items: items,
+            refreshStatus: RefreshStatus.success,
+          ),
+        );
       }
     } catch (e) {
       //todo parse and format message.
       /// If there is error we just show previous items
-      emit(state.copyWith(
-        items: previousItems,
-        refreshStatus: RefreshStatus.failure,
-        message: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          items: previousItems,
+          refreshStatus: RefreshStatus.failure,
+          message: e.toString(),
+        ),
+      );
     }
   }
 

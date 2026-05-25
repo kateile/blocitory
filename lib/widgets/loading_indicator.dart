@@ -6,24 +6,19 @@ enum LoadingType { small, normal }
 class LoadingIndicator extends StatelessWidget {
   final LoadingType type;
 
-  const LoadingIndicator({
-    Key? key,
-  })  : type = LoadingType.normal,
-        super(key: key);
+  const LoadingIndicator({Key? key})
+    : type = LoadingType.normal,
+      super(key: key);
 
-  const LoadingIndicator.small({
-    Key? key,
-  })  : type = LoadingType.small,
-        super(key: key);
+  const LoadingIndicator.small({Key? key})
+    : type = LoadingType.small,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
     if (type == LoadingType.small) {
       return Padding(
-        padding: const EdgeInsets.only(
-          right: 16.0,
-          left: 16.0,
-        ),
+        padding: const EdgeInsets.only(right: 16.0, left: 16.0),
         child: Container(
           alignment: Alignment.center,
           child: const Center(
@@ -42,9 +37,7 @@ class LoadingIndicator extends StatelessWidget {
 
     return const Padding(
       padding: EdgeInsets.all(36.0), //important in BottomSheets
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
+      child: Center(child: CircularProgressIndicator()),
     );
   }
 }

@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:graphql/client.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-typedef PagedListExecutor = Future<QueryResult> Function(
-    BuildContext context, int skip);
+typedef PagedListExecutor<T> =
+    Future<List<T>> Function(BuildContext context, int skip);
 
-/// Parser must return expected result.
-typedef PagedListResultParser<R> = List<R> Function(QueryResult result);
-
-typedef PagedListWidgetBuilder<T> = Widget Function(
-    BuildContext context, T item);
+typedef PagedListWidgetBuilder<T> =
+    Widget Function(BuildContext context, T item);
 
 class AutoPagedList<T> extends StatefulWidget {
   final PagedListWidgetBuilder<T> widgetBuilder;
-  final PagedListExecutor executor; //executor
-  final PagedListResultParser<T> parser;
+  final PagedListExecutor<T> executor;
   final bool grid;
   final int crossAxisCount;
   final PagingController<int, T>? controller;
@@ -23,7 +18,6 @@ class AutoPagedList<T> extends StatefulWidget {
     Key? key,
     required this.widgetBuilder,
     required this.executor,
-    required this.parser,
     this.grid = false,
     this.crossAxisCount = 2,
     this.controller,
@@ -53,20 +47,14 @@ class _AutoPagedListState<T> extends State<AutoPagedList<T>> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final result = await widget.executor(context, pageKey);
+      final newData = await widget.executor(context, pageKey);
 
-      if (result.hasException) {
-        _pagingController.error = result.exception;
+      final isLastPage = newData.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newData);
       } else {
-        final List<T> newData = widget.parser(result);
-
-        final isLastPage = newData.length < _pageSize;
-        if (isLastPage) {
-          _pagingController.appendLastPage(newData);
-        } else {
-          final nextPageKey = pageKey + newData.length;
-          _pagingController.appendPage(newData, nextPageKey);
-        }
+        final nextPageKey = pageKey + newData.length;
+        _pagingController.appendPage(newData, nextPageKey);
       }
     } catch (error) {
       _pagingController.error = error;
@@ -76,9 +64,7 @@ class _AutoPagedListState<T> extends State<AutoPagedList<T>> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => Future.sync(
-        () => _pagingController.refresh(),
-      ),
+      onRefresh: () => Future.sync(() => _pagingController.refresh()),
       child: Builder(
         builder: (context) {
           if (widget.grid) {

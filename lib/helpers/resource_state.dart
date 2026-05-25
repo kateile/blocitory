@@ -9,20 +9,22 @@ class ResourceState<T> extends Equatable {
     this.status = ResourceStatus.initial,
     this.data,
     this.exception,
+    this.errorMessage,
     this.updatedAt,
   });
 
   final ResourceStatus status;
   final T? data;
   final dynamic exception;
+  final String? errorMessage;
 
   ///Useful for updating new state since change in just T is not enough
   final int? updatedAt;
 
   String? get message {
-    return formatGraphqlError(exception);
+    return errorMessage ?? formatGraphqlError(exception);
   }
 
   @override
-  List<Object?> get props => [status, data, exception, updatedAt];
+  List<Object?> get props => [status, data, exception, errorMessage, updatedAt];
 }

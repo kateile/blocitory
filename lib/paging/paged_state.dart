@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 enum PagedStatus { initial, success, failure, loading, end }
+
 enum RefreshStatus { initial, success, failure, refreshing }
 
 class PagedState<T> extends Equatable {
@@ -12,9 +13,9 @@ class PagedState<T> extends Equatable {
     List<T>? addedItems,
     List<T>? updatedItems,
     this.updatedAt,
-  })  : items = items ?? <T>[],
-        newItems = addedItems ?? <T>[],
-        updatedItems = updatedItems ?? <T>[];
+  }) : items = items ?? <T>[],
+       newItems = addedItems ?? <T>[],
+       updatedItems = updatedItems ?? <T>[];
 
   final PagedStatus status;
   final RefreshStatus refreshStatus;
@@ -50,12 +51,12 @@ class PagedState<T> extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        items,
-        message,
-        refreshStatus,
-        updatedItems,
-        updatedAt,
-        newItems,
-      ];
+    status,
+    items,
+    message,
+    refreshStatus,
+    updatedItems,
+    updatedAt,
+    newItems,
+  ];
 }

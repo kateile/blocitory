@@ -34,9 +34,7 @@ class Button extends StatelessWidget {
               // ),
               //textColor: Colors.white,
               onPressed: callback,
-              child: Text(
-                title,
-              ),
+              child: Text(title),
             ),
           ),
         ],

@@ -8,22 +8,18 @@ class ResourceListCubit<T> extends ResourceCubit<ResourceListData<T>> {
     final list = state.data?.items;
     list?.insert(0, item);
 
-    super.update(state.data?.copyWith(
-      items: list,
-      addedItems: [item],
-      updatedItems: [],
-    ));
+    super.update(
+      state.data?.copyWith(items: list, addedItems: [item], updatedItems: []),
+    );
   }
 
   addItems(List<T> items) {
     final list = state.data?.items;
     list?.insertAll(0, items);
 
-    super.update(state.data?.copyWith(
-      items: list,
-      addedItems: items,
-      updatedItems: [],
-    ));
+    super.update(
+      state.data?.copyWith(items: list, addedItems: items, updatedItems: []),
+    );
   }
 
   updateItem(T Function(List<T> e) test, T newItem) {
@@ -36,11 +32,13 @@ class ResourceListCubit<T> extends ResourceCubit<ResourceListData<T>> {
 
     list?.insert(0, newItem);
 
-    super.update(state.data?.copyWith(
-      items: list,
-      addedItems: [], //So indicator will be in one place
-      updatedItems: [newItem],
-    ));
+    super.update(
+      state.data?.copyWith(
+        items: list,
+        addedItems: [], //So indicator will be in one place
+        updatedItems: [newItem],
+      ),
+    );
   }
 
   T? findItem(bool Function(T e) test) {

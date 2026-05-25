@@ -13,10 +13,7 @@ class LoadMoreButton extends StatelessWidget {
         onPressed: onPressed,
         elevation: 2.0,
         fillColor: Colors.white,
-        child: const Icon(
-          Icons.add,
-          size: 30.0,
-        ),
+        child: const Icon(Icons.add, size: 30.0),
         padding: const EdgeInsets.all(10.0),
         shape: const CircleBorder(),
       ),

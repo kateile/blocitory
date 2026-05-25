@@ -19,40 +19,27 @@ class _ManualPagedMeta {
   });
 }
 
-typedef ManualPagedWidgetBuilder<T> = Widget Function(
-  BuildContext context,
-  T data,
-  _ManualPagedMeta meta,
-);
+typedef ManualPagedWidgetBuilder<T> =
+    Widget Function(BuildContext context, T data, _ManualPagedMeta meta);
 
 ///this is for showing current balance and 10 recent payments made.
 class ManualPagedList<C extends PagedCubit<T>, T> extends StatelessWidget {
   final ManualPagedWidgetBuilder<T> builder;
   final bool reverse;
 
-  const ManualPagedList({
-    Key? key,
-    required this.builder,
-    this.reverse = false,
-  }) : super(key: key);
+  const ManualPagedList({Key? key, required this.builder, this.reverse = false})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<C, PagedState<T>>(
       listener: (context, state) {
         if (state.refreshStatus == RefreshStatus.failure) {
-          displayError(
-            context: context,
-            message: state.message ?? "Failed",
-          );
+          displayError(context: context, message: state.message ?? "Failed");
         }
 
         if (state.refreshStatus == RefreshStatus.success) {
-          displaySuccess(
-            context: context,
-            message: 'Refreshed!',
-            duration: 1,
-          );
+          displaySuccess(context: context, message: 'Refreshed!', duration: 1);
         }
       },
       builder: (context, state) {
@@ -69,7 +56,8 @@ class ManualPagedList<C extends PagedCubit<T>, T> extends StatelessWidget {
           child: ListView.builder(
             reverse: reverse,
             physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
             itemBuilder: (BuildContext context, int index) {
               if (index == state.items.length) {
                 if (state.status == PagedStatus.loading) {
