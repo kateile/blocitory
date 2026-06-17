@@ -42,6 +42,34 @@ void main() {
     );
   });
 
+  test('formats top-level GraphQL response errors when data is null', () {
+    final response = {
+      'errors': [
+        {
+          'message':
+              'the requested element is null which the schema does not allow',
+          'path': ['products', 2, 'account'],
+        },
+        {
+          'message':
+              'the requested element is null which the schema does not allow',
+          'path': ['products', 0, 'account'],
+        },
+        {
+          'message':
+              'the requested element is null which the schema does not allow',
+          'path': ['products', 1, 'account'],
+        },
+      ],
+      'data': null,
+    };
+
+    expect(
+      formatGraphqlError(response),
+      'the requested element is null which the schema does not allow',
+    );
+  });
+
   test('operation exception extracts response graphql errors', () {
     final exception = GraphQLOperationException.fromResponse(
       operationName: 'signIn',
@@ -53,7 +81,32 @@ void main() {
     );
 
     expect(exception.message, 'incorrect username or password');
-    expect(exception.graphqlErrors.single.message, 'incorrect username or password');
+    expect(
+      exception.graphqlErrors.single.message,
+      'incorrect username or password',
+    );
+  });
+
+  test('operation exception extracts top-level response errors', () {
+    final exception = GraphQLOperationException.fromResponse(
+      operationName: 'products',
+      response: const _FakeGraphqlResponse(
+        errors: [
+          _FakeGraphqlError(
+            'the requested element is null which the schema does not allow',
+          ),
+        ],
+      ),
+    );
+
+    expect(
+      exception.message,
+      'the requested element is null which the schema does not allow',
+    );
+    expect(
+      exception.graphqlErrors.single.message,
+      'the requested element is null which the schema does not allow',
+    );
   });
 
   test('operation exception sanitizes transport response errors', () {
@@ -171,10 +224,12 @@ class _FakeGraphqlError {
 
 class _FakeGraphqlResponse {
   const _FakeGraphqlResponse({
+    this.errors,
     this.graphqlErrors,
     this.linkException,
   });
 
+  final List<dynamic>? errors;
   final List<dynamic>? graphqlErrors;
   final Object? linkException;
 }

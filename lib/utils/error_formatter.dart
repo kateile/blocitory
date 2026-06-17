@@ -9,6 +9,7 @@ String? formatGraphqlError(dynamic exception) {
   log('result exception ${exception.toString()}');
 
   final messages = <String>[
+    ..._messagesFromErrors(_property(exception, 'errors')),
     ..._messagesFromErrors(_property(exception, 'graphqlErrors')),
     ..._messagesFromErrors(
       _property(
@@ -50,7 +51,9 @@ class GraphQLOperationException implements Exception {
   }) {
     final linkException = _property(response, 'linkException');
     final graphqlErrors = _uniqueMessages([
+      ..._messagesFromErrors(_property(response, 'errors')),
       ..._messagesFromErrors(_property(response, 'graphqlErrors')),
+      ..._messagesFromErrors(_property(response, 'parsedResponse')?.errors),
       ..._messagesFromErrors(
         _property(_property(linkException, 'parsedResponse'), 'errors'),
       ),
@@ -126,11 +129,12 @@ class GraphQLErrorMessage {
 }
 
 String graphqlOperationMessage(Object exception) {
-  final parsedMessages = _uniqueMessages(
-    _messagesFromErrors(
+  final parsedMessages = _uniqueMessages([
+    ..._messagesFromErrors(_property(exception, 'errors')),
+    ..._messagesFromErrors(
       _property(_property(exception, 'parsedResponse'), 'errors'),
     ),
-  );
+  ]);
   if (parsedMessages.isNotEmpty) return parsedMessages.join('\n');
 
   if (_isConnectionFailure(exception)) return serverUnreachableMessage;
