@@ -91,7 +91,7 @@ class GraphQLOperationException implements Exception {
   final Object? linkException;
 
   @override
-  String toString() => 'GraphQLOperationException($operationName): $message';
+  String toString() => message;
 }
 
 class GraphQLMutationException extends GraphQLOperationException {

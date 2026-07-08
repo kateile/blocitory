@@ -81,6 +81,7 @@ void main() {
     );
 
     expect(exception.message, 'incorrect username or password');
+    expect(exception.toString(), 'incorrect username or password');
     expect(
       exception.graphqlErrors.single.message,
       'incorrect username or password',
