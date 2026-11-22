@@ -67,7 +67,7 @@ class MutationBuilder<T, B extends Cubit<ResourceState<T>>, R>
               displaySuccess(
                 context: context,
                 message: successMessage ?? 'Action completed successfully!',
-                duration: 3,
+                duration: 5,
               );
             }
 
